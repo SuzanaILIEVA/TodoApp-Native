@@ -6,7 +6,7 @@ function App() {
   return (
     <SafeAreaView>
       <View>
-        <Text> deneme</Text>
+        <Text> deneme week1</Text>
       </View>
     </SafeAreaView>
   );
