@@ -12,6 +12,7 @@ import Header from './src/components/header';
 import generalStyles from './src/utils/generalStyles';
 import Input from './src/components/input';
 import {colors} from './src/utils/contants';
+import Todo from './src/components/todo';
 
 function App() {
   const [text, setText] = useState('');
@@ -22,7 +23,7 @@ function App() {
       id: String(new Date().getTime()),
       text: text,
       date: new Date(),
-      complated: false,
+      completed: false,
     };
 
     setTodos([...todos, newTodo]);
@@ -50,7 +51,9 @@ function App() {
           </Text>
         ) : (
           <ScrollView style={styles.scrollView}>
-            <Text>TODO DOLU</Text>
+            {todos?.map(todo => (
+              <Todo key={todo.id} todo={todo} />
+            ))}
           </ScrollView>
         )}
       </View>
@@ -63,7 +66,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 20,
     marginVertical: 30,
-    borderWidth: 1,
   },
   emtyText: {
     textAlign: 'center',
