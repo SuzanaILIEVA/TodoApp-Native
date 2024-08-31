@@ -52,7 +52,12 @@ function App() {
         ) : (
           <ScrollView style={styles.scrollView}>
             {todos?.map(todo => (
-              <Todo key={todo.id} todo={todo} />
+              <Todo
+                key={todo.id}
+                todo={todo}
+                todos={todos}
+                setTodos={setTodos}
+              />
             ))}
           </ScrollView>
         )}
