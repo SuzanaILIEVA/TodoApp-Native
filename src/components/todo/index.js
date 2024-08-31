@@ -1,10 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Alert, Text, TouchableOpacity, View} from 'react-native';
 import styles from './style';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {colors} from '../../utils/contants';
+import EditModal from '../editModal';
 
 const Todo = ({todo = {}, todos = [], setTodos = () => {}}) => {
+  const [openModal, setOpenModal] = useState(false);
+  const [willEditText, setWillEditText] = useState(todo.text);
+  const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const deleteTodo = () => {
     Alert.alert(
       'Silme işlemi',
@@ -35,6 +41,7 @@ const Todo = ({todo = {}, todos = [], setTodos = () => {}}) => {
           text: todo.completed ? 'İşareti Kaldir' : 'işaretle',
           onPress: () => {
             const tempArry = []; // bos bir dizi olustur
+
             for (let i = 0; i < todos.length; i++) {
               if (todos[i].id !== todo.id) {
                 tempArry.push(todos[i]);
@@ -43,10 +50,11 @@ const Todo = ({todo = {}, todos = [], setTodos = () => {}}) => {
                   ...todo,
                   completed: !todo.completed,
                 };
+
                 tempArry.push(newTodo);
               }
             }
-
+            console.log(tempArry);
             setTodos(tempArry);
           },
           style: 'destructive',
@@ -54,6 +62,37 @@ const Todo = ({todo = {}, todos = [], setTodos = () => {}}) => {
       ],
     );
   };
+
+  const editTodo = () => {
+    /**validation(inputu bos birakinca hata verir) */
+    if (willEditText === '') {
+      setHasError(true);
+      setErrorMessage('Text Alanı Boş Bırakılamaz');
+      setTimeout(() => {
+        setHasError(false);
+        setErrorMessage('');
+      }, 2000);
+    }
+
+    /**Guncelleme */
+    const tempArry = [];
+
+    for (let i = 0; i < todos.length; i++) {
+      if (todos[i].id !== todo.id) {
+        tempArry.push(todos[i]);
+      } else {
+        const updatedTodo = {
+          ...todo,
+          text: willEditText,
+        };
+        tempArry.push(updatedTodo);
+      }
+    }
+
+    setTodos(tempArry);
+    setOpenModal(false);
+  };
+
   return (
     <View style={styles.todoWrapper}>
       <View>
@@ -73,13 +112,22 @@ const Todo = ({todo = {}, todos = [], setTodos = () => {}}) => {
             color={colors.green}
           />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setOpenModal(true)}>
           <Icon name="edit" size={20} color={colors.bgPrimary} />
         </TouchableOpacity>
         <TouchableOpacity onPress={deleteTodo}>
           <Icon name="closecircle" size={20} color={colors.red} />
         </TouchableOpacity>
       </View>
+      <EditModal
+        willEditText={willEditText}
+        setWillEditText={setWillEditText}
+        visible={openModal}
+        closeModal={() => setOpenModal(false)}
+        onComfirm={editTodo}
+        hasError={hasError}
+        errorMessage={errorMessage}
+      />
     </View>
   );
 };
