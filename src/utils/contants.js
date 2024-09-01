@@ -5,4 +5,5 @@ export const colors = {
   white: '#fff',
   green: '#88D66C',
   red: '#EF5A6F',
+  modalBg: '#0000004d',
 };

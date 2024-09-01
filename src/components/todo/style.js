@@ -16,6 +16,10 @@ const styles = StyleSheet.create({
     fontSize: 17,
     marginBottom: 10,
   },
+  complatedTodo: {
+    color: colors.red,
+    textDecorationLine: 'line-through',
+  },
   date: {
     color: colors.textPrimary,
   },
