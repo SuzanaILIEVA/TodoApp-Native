@@ -30,10 +30,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 7,
     borderRadius: 5,
+    backgroundColor: colors.textPrimary,
   },
   closeBtn: {
     fontSize: 15,
     fontWeight: 'bold',
+    color: colors.white,
   },
   confirmBtnWrapper: {
     borderWidth: 1,

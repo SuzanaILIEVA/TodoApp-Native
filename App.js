@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {
   Alert,
@@ -13,6 +13,7 @@ import generalStyles from './src/utils/generalStyles';
 import Input from './src/components/input';
 import {colors} from './src/utils/contants';
 import Todo from './src/components/todo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function App() {
   const [text, setText] = useState('');
@@ -26,9 +27,30 @@ function App() {
       completed: false,
     };
 
-    setTodos([...todos, newTodo]);
-    setText('');
+    AsyncStorage.setItem('@todos', JSON.stringify([...todos, newTodo]))
+      .then(() => {
+        setTodos([...todos, newTodo]);
+        setText('');
+      })
+      .catch(err => {
+        Alert.alert('bir sorun olustu ');
+      });
   };
+
+  useEffect(() => {
+    AsyncStorage.getItem('@todos')
+      .then(res => {
+        console.log(res);
+        /**eger res null degilse AsyncStorage'ta bir kayit vardir */
+        if (res !== null) {
+          const parsedRes = JSON.parse(res);
+          console.log(parsedRes);
+
+          setTodos(parsedRes);
+        }
+      })
+      .catch(err => console.log(err));
+  }, []);
 
   return (
     <SafeAreaView style={[generalStyles.flex1, generalStyles.bgWhite]}>

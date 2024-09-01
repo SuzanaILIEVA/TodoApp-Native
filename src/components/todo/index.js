@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Alert, Text, TouchableOpacity, View} from 'react-native';
 import styles from './style';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {colors} from '../../utils/contants';
 import EditModal from '../editModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {jsx} from 'react/jsx-runtime';
 
 const Todo = ({todo = {}, todos = [], setTodos = () => {}}) => {
   const [openModal, setOpenModal] = useState(false);
@@ -23,7 +25,9 @@ const Todo = ({todo = {}, todos = [], setTodos = () => {}}) => {
           text: 'Sil',
           onPress: () => {
             const filtredTodo = todos.filter(item => item.id !== todo.id);
-            setTodos(filtredTodo);
+            AsyncStorage.setItem('@todos', JSON.stringify(filtredTodo)).then(
+              () => setTodos(filtredTodo),
+            );
           },
           style: 'destructive',
         },
@@ -54,8 +58,10 @@ const Todo = ({todo = {}, todos = [], setTodos = () => {}}) => {
                 tempArry.push(newTodo);
               }
             }
-            console.log(tempArry);
-            setTodos(tempArry);
+
+            AsyncStorage.setItem('@todos', JSON.stringify(tempArry)).then(() =>
+              setTodos(tempArry),
+            );
           },
           style: 'destructive',
         },
@@ -89,8 +95,10 @@ const Todo = ({todo = {}, todos = [], setTodos = () => {}}) => {
       }
     }
 
-    setTodos(tempArry);
-    setOpenModal(false);
+    AsyncStorage.setItem('@todos', JSON.stringify(tempArry)).then(() => {
+      setTodos(tempArry);
+      setOpenModal(false);
+    });
   };
 
   return (
