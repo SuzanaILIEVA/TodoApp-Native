@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Alert, Text, TouchableOpacity, View} from 'react-native';
 import styles from './style';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {colors} from '../../utils/contants';
 import EditModal from '../editModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {jsx} from 'react/jsx-runtime';
 
 const Todo = ({todo = {}, todos = [], setTodos = () => {}}) => {
   const [openModal, setOpenModal] = useState(false);
